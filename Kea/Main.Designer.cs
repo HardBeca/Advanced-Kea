@@ -41,6 +41,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.processInfo = new System.Windows.Forms.TextBox();
             this.QueueGrid = new System.Windows.Forms.DataGridView();
+            this.titleNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.titleName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.titleEpBegin = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.titleEpEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.titleTranslationLanguageCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.titleTranslationTeamVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.titleUrl = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.QueueTextbox = new System.Windows.Forms.RichTextBox();
             this.savepathTB = new System.Windows.Forms.TextBox();
             this.selectFolderBtn = new System.Windows.Forms.Button();
@@ -59,13 +66,6 @@
             this.saveAsOption = new System.Windows.Forms.ComboBox();
             this.HighestQualityCB = new System.Windows.Forms.CheckBox();
             this.skipDownloadedChaptersCB = new System.Windows.Forms.CheckBox();
-            this.titleNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.titleName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.titleEpBegin = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.titleEpEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.titleTranslationLanguageCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.titleTranslationTeamVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.titleUrl = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.HandleBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.QueueGrid)).BeginInit();
@@ -87,13 +87,15 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
             this.label1.Location = new System.Drawing.Point(12, 42);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 16);
+            this.label1.Size = new System.Drawing.Size(113, 16);
             this.label1.TabIndex = 2;
             this.label1.Text = "enter URLs below";
+            this.toolTips.SetToolTip(this.label1, "https://www.webtoons.com/en/action/hero-killer/list?title_no=2745\r\nhttps://anime-" +
+        "sama.fr/catalogue/one-piece/scan_noir-et-blanc/vf/");
             // 
             // URLTextbox
             // 
@@ -121,11 +123,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
             this.label3.Location = new System.Drawing.Point(9, 203);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 16);
+            this.label3.Size = new System.Drawing.Size(45, 16);
             this.label3.TabIndex = 6;
             this.label3.Text = "queue";
             // 
@@ -134,7 +136,7 @@
             this.startBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(165)))), ((int)(((byte)(157)))));
             this.startBtn.FlatAppearance.BorderSize = 0;
             this.startBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.startBtn.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.startBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
             this.startBtn.Location = new System.Drawing.Point(12, 519);
             this.startBtn.Name = "startBtn";
@@ -159,7 +161,7 @@
             this.addToQueueBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(165)))), ((int)(((byte)(157)))));
             this.addToQueueBtn.FlatAppearance.BorderSize = 0;
             this.addToQueueBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.addToQueueBtn.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addToQueueBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addToQueueBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
             this.addToQueueBtn.Location = new System.Drawing.Point(12, 164);
             this.addToQueueBtn.Name = "addToQueueBtn";
@@ -172,11 +174,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
             this.label4.Location = new System.Drawing.Point(9, 553);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(131, 16);
+            this.label4.Size = new System.Drawing.Size(130, 16);
             this.label4.TabIndex = 12;
             this.label4.Text = "currently processing:";
             // 
@@ -213,229 +215,6 @@
             this.QueueGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.QueueGrid.Size = new System.Drawing.Size(520, 146);
             this.QueueGrid.TabIndex = 14;
-            // 
-            // QueueTextbox
-            // 
-            this.QueueTextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.QueueTextbox.Location = new System.Drawing.Point(12, 221);
-            this.QueueTextbox.Name = "QueueTextbox";
-            this.QueueTextbox.ReadOnly = true;
-            this.QueueTextbox.Size = new System.Drawing.Size(520, 63);
-            this.QueueTextbox.TabIndex = 7;
-            this.QueueTextbox.Text = "";
-            this.QueueTextbox.Visible = false;
-            // 
-            // savepathTB
-            // 
-            this.savepathTB.Location = new System.Drawing.Point(12, 397);
-            this.savepathTB.Name = "savepathTB";
-            this.savepathTB.ReadOnly = true;
-            this.savepathTB.Size = new System.Drawing.Size(483, 20);
-            this.savepathTB.TabIndex = 15;
-            // 
-            // selectFolderBtn
-            // 
-            this.selectFolderBtn.BackColor = System.Drawing.Color.White;
-            this.selectFolderBtn.FlatAppearance.BorderSize = 0;
-            this.selectFolderBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.selectFolderBtn.Font = new System.Drawing.Font("Segoe MDL2 Assets", 11.25F, System.Drawing.FontStyle.Bold);
-            this.selectFolderBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.selectFolderBtn.Image = ((System.Drawing.Image)(resources.GetObject("selectFolderBtn.Image")));
-            this.selectFolderBtn.Location = new System.Drawing.Point(501, 394);
-            this.selectFolderBtn.Name = "selectFolderBtn";
-            this.selectFolderBtn.Size = new System.Drawing.Size(31, 26);
-            this.selectFolderBtn.TabIndex = 16;
-            this.selectFolderBtn.UseVisualStyleBackColor = false;
-            this.selectFolderBtn.Click += new System.EventHandler(this.selectFolderBtn_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
-            this.label2.Location = new System.Drawing.Point(9, 430);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(121, 16);
-            this.label2.TabIndex = 17;
-            this.label2.Text = "use sub-folders for:";
-            // 
-            // cartoonFoldersCB
-            // 
-            this.cartoonFoldersCB.AutoSize = true;
-            this.cartoonFoldersCB.Checked = true;
-            this.cartoonFoldersCB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cartoonFoldersCB.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cartoonFoldersCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
-            this.cartoonFoldersCB.Location = new System.Drawing.Point(154, 429);
-            this.cartoonFoldersCB.Name = "cartoonFoldersCB";
-            this.cartoonFoldersCB.Size = new System.Drawing.Size(105, 20);
-            this.cartoonFoldersCB.TabIndex = 18;
-            this.cartoonFoldersCB.Text = "each cartoon";
-            this.cartoonFoldersCB.UseVisualStyleBackColor = true;
-            // 
-            // chapterFoldersCB
-            // 
-            this.chapterFoldersCB.AutoSize = true;
-            this.chapterFoldersCB.Enabled = false;
-            this.chapterFoldersCB.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chapterFoldersCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
-            this.chapterFoldersCB.Location = new System.Drawing.Point(280, 429);
-            this.chapterFoldersCB.Name = "chapterFoldersCB";
-            this.chapterFoldersCB.Size = new System.Drawing.Size(105, 20);
-            this.chapterFoldersCB.TabIndex = 19;
-            this.chapterFoldersCB.Text = "each chapter";
-            this.chapterFoldersCB.UseVisualStyleBackColor = true;
-            // 
-            // minimizeBtn
-            // 
-            this.minimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(14)))));
-            this.minimizeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.minimizeBtn.Image = ((System.Drawing.Image)(resources.GetObject("minimizeBtn.Image")));
-            this.minimizeBtn.Location = new System.Drawing.Point(477, 0);
-            this.minimizeBtn.Name = "minimizeBtn";
-            this.minimizeBtn.Size = new System.Drawing.Size(34, 30);
-            this.minimizeBtn.TabIndex = 20;
-            this.minimizeBtn.TabStop = false;
-            this.minimizeBtn.Click += new System.EventHandler(this.minimizeBtn_Click);
-            this.minimizeBtn.MouseEnter += new System.EventHandler(this.minimizeBtn_MouseEnter);
-            this.minimizeBtn.MouseLeave += new System.EventHandler(this.minimizeBtn_MouseLeave);
-            // 
-            // removeAllBtn
-            // 
-            this.removeAllBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(165)))), ((int)(((byte)(157)))));
-            this.removeAllBtn.FlatAppearance.BorderSize = 0;
-            this.removeAllBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.removeAllBtn.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.removeAllBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
-            this.removeAllBtn.Location = new System.Drawing.Point(409, 164);
-            this.removeAllBtn.Name = "removeAllBtn";
-            this.removeAllBtn.Size = new System.Drawing.Size(123, 26);
-            this.removeAllBtn.TabIndex = 21;
-            this.removeAllBtn.Text = "remove all";
-            this.removeAllBtn.UseVisualStyleBackColor = false;
-            this.removeAllBtn.Click += new System.EventHandler(this.removeAllBtn_Click);
-            // 
-            // removeSelectedBtn
-            // 
-            this.removeSelectedBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(165)))), ((int)(((byte)(157)))));
-            this.removeSelectedBtn.FlatAppearance.BorderSize = 0;
-            this.removeSelectedBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.removeSelectedBtn.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.removeSelectedBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
-            this.removeSelectedBtn.Location = new System.Drawing.Point(280, 164);
-            this.removeSelectedBtn.Name = "removeSelectedBtn";
-            this.removeSelectedBtn.Size = new System.Drawing.Size(123, 26);
-            this.removeSelectedBtn.TabIndex = 22;
-            this.removeSelectedBtn.Text = "remove selected";
-            this.removeSelectedBtn.UseVisualStyleBackColor = false;
-            this.removeSelectedBtn.Click += new System.EventHandler(this.removeSelectedBtn_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
-            this.label5.Location = new System.Drawing.Point(9, 457);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(114, 16);
-            this.label5.TabIndex = 23;
-            this.label5.Text = "save chapters as:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
-            this.label6.Location = new System.Drawing.Point(9, 379);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(52, 16);
-            this.label6.TabIndex = 26;
-            this.label6.Text = "options";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(14)))));
-            this.label7.Font = new System.Drawing.Font("GT Walsheim Pro Bold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(44, 6);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(35, 16);
-            this.label7.TabIndex = 27;
-            this.label7.Text = "Kea";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(14)))));
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Location = new System.Drawing.Point(8, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(30, 30);
-            this.pictureBox1.TabIndex = 28;
-            this.pictureBox1.TabStop = false;
-            // 
-            // helpBtn
-            // 
-            this.helpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(193)))), ((int)(((byte)(185)))));
-            this.helpBtn.Cursor = System.Windows.Forms.Cursors.Default;
-            this.helpBtn.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.helpBtn.FlatAppearance.BorderSize = 0;
-            this.helpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.helpBtn.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.helpBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
-            this.helpBtn.Location = new System.Drawing.Point(377, 36);
-            this.helpBtn.Name = "helpBtn";
-            this.helpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.helpBtn.Size = new System.Drawing.Size(155, 26);
-            this.helpBtn.TabIndex = 29;
-            this.helpBtn.Text = "help, how do I use this ?";
-            this.helpBtn.UseVisualStyleBackColor = false;
-            this.helpBtn.Click += new System.EventHandler(this.helpBtn_Click);
-            // 
-            // saveAsOption
-            // 
-            this.saveAsOption.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F);
-            this.saveAsOption.FormattingEnabled = true;
-            this.saveAsOption.Items.AddRange(new object[] {
-            "PDF file",
-            "CBZ file",
-            "multiple images",
-            "one image (may be lower in quality)"});
-            this.saveAsOption.Location = new System.Drawing.Point(154, 455);
-            this.saveAsOption.Name = "saveAsOption";
-            this.saveAsOption.Size = new System.Drawing.Size(230, 24);
-            this.saveAsOption.TabIndex = 30;
-            this.saveAsOption.Text = "PDF file";
-            this.saveAsOption.SelectedIndexChanged += new System.EventHandler(this.saveAsOption_SelectedIndexChanged);
-            // 
-            // HighestQualityCB
-            // 
-            this.HighestQualityCB.AutoSize = true;
-            this.HighestQualityCB.Checked = true;
-            this.HighestQualityCB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.HighestQualityCB.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HighestQualityCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
-            this.HighestQualityCB.Location = new System.Drawing.Point(390, 458);
-            this.HighestQualityCB.Name = "HighestQualityCB";
-            this.HighestQualityCB.Size = new System.Drawing.Size(117, 20);
-            this.HighestQualityCB.TabIndex = 31;
-            this.HighestQualityCB.Text = "Highest Quality";
-            this.HighestQualityCB.UseVisualStyleBackColor = true;
-            // 
-            // skipDownloadedChaptersCB
-            // 
-            this.skipDownloadedChaptersCB.AutoSize = true;
-            this.skipDownloadedChaptersCB.Checked = true;
-            this.skipDownloadedChaptersCB.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.skipDownloadedChaptersCB.Font = new System.Drawing.Font("GT Walsheim Light", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.skipDownloadedChaptersCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
-            this.skipDownloadedChaptersCB.Location = new System.Drawing.Point(154, 485);
-            this.skipDownloadedChaptersCB.Name = "skipDownloadedChaptersCB";
-            this.skipDownloadedChaptersCB.Size = new System.Drawing.Size(187, 20);
-            this.skipDownloadedChaptersCB.TabIndex = 32;
-            this.skipDownloadedChaptersCB.Text = "Skip downloaded chapters";
-            this.skipDownloadedChaptersCB.UseVisualStyleBackColor = true;
             // 
             // titleNo
             // 
@@ -487,6 +266,231 @@
             this.titleUrl.ReadOnly = true;
             this.titleUrl.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.titleUrl.Visible = false;
+            // 
+            // QueueTextbox
+            // 
+            this.QueueTextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.QueueTextbox.Location = new System.Drawing.Point(12, 221);
+            this.QueueTextbox.Name = "QueueTextbox";
+            this.QueueTextbox.ReadOnly = true;
+            this.QueueTextbox.Size = new System.Drawing.Size(520, 63);
+            this.QueueTextbox.TabIndex = 7;
+            this.QueueTextbox.Text = "";
+            this.QueueTextbox.Visible = false;
+            // 
+            // savepathTB
+            // 
+            this.savepathTB.Location = new System.Drawing.Point(12, 397);
+            this.savepathTB.Name = "savepathTB";
+            this.savepathTB.ReadOnly = true;
+            this.savepathTB.Size = new System.Drawing.Size(483, 20);
+            this.savepathTB.TabIndex = 15;
+            // 
+            // selectFolderBtn
+            // 
+            this.selectFolderBtn.BackColor = System.Drawing.Color.White;
+            this.selectFolderBtn.FlatAppearance.BorderSize = 0;
+            this.selectFolderBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.selectFolderBtn.Font = new System.Drawing.Font("Segoe MDL2 Assets", 11.25F, System.Drawing.FontStyle.Bold);
+            this.selectFolderBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.selectFolderBtn.Image = ((System.Drawing.Image)(resources.GetObject("selectFolderBtn.Image")));
+            this.selectFolderBtn.Location = new System.Drawing.Point(501, 394);
+            this.selectFolderBtn.Name = "selectFolderBtn";
+            this.selectFolderBtn.Size = new System.Drawing.Size(31, 26);
+            this.selectFolderBtn.TabIndex = 16;
+            this.selectFolderBtn.UseVisualStyleBackColor = false;
+            this.selectFolderBtn.Click += new System.EventHandler(this.selectFolderBtn_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
+            this.label2.Location = new System.Drawing.Point(9, 430);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(120, 16);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "use sub-folders for:";
+            // 
+            // cartoonFoldersCB
+            // 
+            this.cartoonFoldersCB.AutoSize = true;
+            this.cartoonFoldersCB.Checked = true;
+            this.cartoonFoldersCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cartoonFoldersCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cartoonFoldersCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
+            this.cartoonFoldersCB.Location = new System.Drawing.Point(154, 429);
+            this.cartoonFoldersCB.Name = "cartoonFoldersCB";
+            this.cartoonFoldersCB.Size = new System.Drawing.Size(104, 20);
+            this.cartoonFoldersCB.TabIndex = 18;
+            this.cartoonFoldersCB.Text = "each cartoon";
+            this.cartoonFoldersCB.UseVisualStyleBackColor = true;
+            // 
+            // chapterFoldersCB
+            // 
+            this.chapterFoldersCB.AutoSize = true;
+            this.chapterFoldersCB.Enabled = false;
+            this.chapterFoldersCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chapterFoldersCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
+            this.chapterFoldersCB.Location = new System.Drawing.Point(280, 429);
+            this.chapterFoldersCB.Name = "chapterFoldersCB";
+            this.chapterFoldersCB.Size = new System.Drawing.Size(104, 20);
+            this.chapterFoldersCB.TabIndex = 19;
+            this.chapterFoldersCB.Text = "each chapter";
+            this.chapterFoldersCB.UseVisualStyleBackColor = true;
+            // 
+            // minimizeBtn
+            // 
+            this.minimizeBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(14)))));
+            this.minimizeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.minimizeBtn.Image = ((System.Drawing.Image)(resources.GetObject("minimizeBtn.Image")));
+            this.minimizeBtn.Location = new System.Drawing.Point(477, 0);
+            this.minimizeBtn.Name = "minimizeBtn";
+            this.minimizeBtn.Size = new System.Drawing.Size(34, 30);
+            this.minimizeBtn.TabIndex = 20;
+            this.minimizeBtn.TabStop = false;
+            this.minimizeBtn.Click += new System.EventHandler(this.minimizeBtn_Click);
+            this.minimizeBtn.MouseEnter += new System.EventHandler(this.minimizeBtn_MouseEnter);
+            this.minimizeBtn.MouseLeave += new System.EventHandler(this.minimizeBtn_MouseLeave);
+            // 
+            // removeAllBtn
+            // 
+            this.removeAllBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(165)))), ((int)(((byte)(157)))));
+            this.removeAllBtn.FlatAppearance.BorderSize = 0;
+            this.removeAllBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.removeAllBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.removeAllBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
+            this.removeAllBtn.Location = new System.Drawing.Point(409, 164);
+            this.removeAllBtn.Name = "removeAllBtn";
+            this.removeAllBtn.Size = new System.Drawing.Size(123, 26);
+            this.removeAllBtn.TabIndex = 21;
+            this.removeAllBtn.Text = "remove all";
+            this.removeAllBtn.UseVisualStyleBackColor = false;
+            this.removeAllBtn.Click += new System.EventHandler(this.removeAllBtn_Click);
+            // 
+            // removeSelectedBtn
+            // 
+            this.removeSelectedBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(165)))), ((int)(((byte)(157)))));
+            this.removeSelectedBtn.FlatAppearance.BorderSize = 0;
+            this.removeSelectedBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.removeSelectedBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.removeSelectedBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
+            this.removeSelectedBtn.Location = new System.Drawing.Point(280, 164);
+            this.removeSelectedBtn.Name = "removeSelectedBtn";
+            this.removeSelectedBtn.Size = new System.Drawing.Size(123, 26);
+            this.removeSelectedBtn.TabIndex = 22;
+            this.removeSelectedBtn.Text = "remove selected";
+            this.removeSelectedBtn.UseVisualStyleBackColor = false;
+            this.removeSelectedBtn.Click += new System.EventHandler(this.removeSelectedBtn_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
+            this.label5.Location = new System.Drawing.Point(9, 457);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(113, 16);
+            this.label5.TabIndex = 23;
+            this.label5.Text = "save chapters as:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
+            this.label6.Location = new System.Drawing.Point(9, 379);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(51, 16);
+            this.label6.TabIndex = 26;
+            this.label6.Text = "options";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(14)))));
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(44, 6);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(34, 16);
+            this.label7.TabIndex = 27;
+            this.label7.Text = "Kea";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(30)))), ((int)(((byte)(14)))));
+            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.Location = new System.Drawing.Point(8, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(30, 30);
+            this.pictureBox1.TabIndex = 28;
+            this.pictureBox1.TabStop = false;
+            // 
+            // helpBtn
+            // 
+            this.helpBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(176)))), ((int)(((byte)(193)))), ((int)(((byte)(185)))));
+            this.helpBtn.Cursor = System.Windows.Forms.Cursors.Default;
+            this.helpBtn.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.helpBtn.FlatAppearance.BorderSize = 0;
+            this.helpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.helpBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.helpBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
+            this.helpBtn.Location = new System.Drawing.Point(377, 36);
+            this.helpBtn.Name = "helpBtn";
+            this.helpBtn.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.helpBtn.Size = new System.Drawing.Size(155, 26);
+            this.helpBtn.TabIndex = 29;
+            this.helpBtn.Text = "help, how do I use this ?";
+            this.toolTips.SetToolTip(this.helpBtn, "https://www.webtoons.com/en/action/hero-killer/list?title_no=2745\r\nhttps://anime-" +
+        "sama.fr/catalogue/one-piece/scan_noir-et-blanc/vf/");
+            this.helpBtn.UseVisualStyleBackColor = false;
+            this.helpBtn.Click += new System.EventHandler(this.helpBtn_Click);
+            // 
+            // saveAsOption
+            // 
+            this.saveAsOption.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F);
+            this.saveAsOption.FormattingEnabled = true;
+            this.saveAsOption.Items.AddRange(new object[] {
+            "PDF file",
+            "CBZ file",
+            "multiple images",
+            "one image (may be lower in quality)"});
+            this.saveAsOption.Location = new System.Drawing.Point(154, 455);
+            this.saveAsOption.Name = "saveAsOption";
+            this.saveAsOption.Size = new System.Drawing.Size(230, 24);
+            this.saveAsOption.TabIndex = 30;
+            this.saveAsOption.Text = "CBZ file";
+            this.saveAsOption.SelectedIndexChanged += new System.EventHandler(this.saveAsOption_SelectedIndexChanged);
+            // 
+            // HighestQualityCB
+            // 
+            this.HighestQualityCB.AutoSize = true;
+            this.HighestQualityCB.Checked = true;
+            this.HighestQualityCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.HighestQualityCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HighestQualityCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
+            this.HighestQualityCB.Location = new System.Drawing.Point(390, 458);
+            this.HighestQualityCB.Name = "HighestQualityCB";
+            this.HighestQualityCB.Size = new System.Drawing.Size(116, 20);
+            this.HighestQualityCB.TabIndex = 31;
+            this.HighestQualityCB.Text = "Highest Quality";
+            this.HighestQualityCB.UseVisualStyleBackColor = true;
+            // 
+            // skipDownloadedChaptersCB
+            // 
+            this.skipDownloadedChaptersCB.AutoSize = true;
+            this.skipDownloadedChaptersCB.Checked = true;
+            this.skipDownloadedChaptersCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.skipDownloadedChaptersCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.skipDownloadedChaptersCB.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(36)))));
+            this.skipDownloadedChaptersCB.Location = new System.Drawing.Point(154, 485);
+            this.skipDownloadedChaptersCB.Name = "skipDownloadedChaptersCB";
+            this.skipDownloadedChaptersCB.Size = new System.Drawing.Size(186, 20);
+            this.skipDownloadedChaptersCB.TabIndex = 32;
+            this.skipDownloadedChaptersCB.Text = "Skip downloaded chapters";
+            this.skipDownloadedChaptersCB.UseVisualStyleBackColor = true;
             // 
             // Main
             // 

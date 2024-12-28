@@ -2,22 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HtmlAgilityPack;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using Image = iTextSharp.text.Image;
-using Rectangle = iTextSharp.text.Rectangle;
+using ImageMagick;
 using Kea.CommonFiles;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 
 namespace Kea
 {
@@ -28,8 +24,10 @@ namespace Kea
 
 		public List<Structures.ToonListEntry> toonList;
 		public string saveAs;
+		public string animeImageUrl;
+        public int animeMaxChapter;
 
-		[System.Runtime.InteropServices.DllImport("user32.dll")]
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
 		public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 		[System.Runtime.InteropServices.DllImport("user32.dll")]
 		public static extern bool ReleaseCapture();
@@ -65,67 +63,83 @@ namespace Kea
 		}
 
 		private void addToQueueBtn_Click(object sender, EventArgs e)
-		{
-			List<string> lines = new List<string>();
+        {//ex: https://www.webtoons.com/en/action/hero-killer/list?title_no=2745
+         //ex:https://anime-sama.fr/catalogue/one-piece/scan_noir-et-blanc/vf/
+            List<string> lines = new List<string>();
 			lines.AddRange(URLTextbox.Text.Split('\n'));
 			foreach (string _line in lines)
 			{
 				string line = _line;
 				int nameEnd = 0;
 				int nameStart = 0;
-				if (!line.Contains("https://www.webtoons.com/") || !line.Contains("/list?title_no=")) { continue; } //doesn't support m.webtoons.com bc it would result in a 400 bad request and i'm too lazy to replace the m with www manually
-				if (line.Length - line.Replace("/", "").Length != 6) { continue; }
-				try
-				{
-					for (int i = 0; i < 6; i++)
-					{
-						nameStart = nameEnd;
-						while (line[nameEnd] != '/') nameEnd++;
-						nameEnd++;
-					}
-				}
-				catch { continue; }
-				string toonName = line.Substring(nameStart, nameEnd - nameStart - 1);
-				
-				Uri lineUri = new Uri(line);
-				int titleNo = Convert.ToInt32(System.Web.HttpUtility.ParseQueryString(lineUri.Query).Get("title_no"));
+                Uri lineUri = new Uri(line);
+                string languageCode = System.Web.HttpUtility.ParseQueryString(lineUri.Query).Get("language");
 
-				string languageCode = System.Web.HttpUtility.ParseQueryString(lineUri.Query).Get("language");
-
-				if (Helpers.IsStringEmptyNullOrWhiteSpace(languageCode))
+                if (line.Contains("https://www.webtoons.com/") && line.Contains("/list?title_no="))
 				{
-					languageCode = "default";
-				}
+                    if (line.Length - line.Replace("/", "").Length != 6) { continue; }
+                    try
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            nameStart = nameEnd;
+                            while (line[nameEnd] != '/') nameEnd++;
+                            nameEnd++;
+                        }
+                    }
+                    catch { continue; }
+                    string toonName = line.Substring(nameStart, nameEnd - nameStart - 1);
+
+                    
+                    int titleNo = Convert.ToInt32(System.Web.HttpUtility.ParseQueryString(lineUri.Query).Get("title_no"));
+
+
+                    if (Helpers.IsStringEmptyNullOrWhiteSpace(languageCode))
+                    {
+                        languageCode = "default";
+                    }
+                    else
+                    {
+                        //Query used by Kea to download fan translations, webtoons doesn't support this query
+                        line = Helpers.RemoveQueryStringByKey(line, "language");
+                    }
+
+                    string teamVersion = System.Web.HttpUtility.ParseQueryString(lineUri.Query).Get("teamVersion");
+
+                    if (Helpers.IsStringEmptyNullOrWhiteSpace(teamVersion))
+                    {
+                        teamVersion = "default";
+                    }
+                    else
+                    {
+                        //Query used by Kea to download fan translations, webtoons doesn't support this query
+                        line = Helpers.RemoveQueryStringByKey(line, "teamVersion");
+                    }
+
+                    if (languageCode == "default" && teamVersion != "default")
+                    {
+                        MessageBox.Show("default language can't have a team version.");
+                        continue;
+                    }
+
+                    var items = QueueGrid.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["titleName"].Value.ToString() == toonName && Convert.ToInt32(row.Cells["titleNo"].Value.ToString()) == titleNo && row.Cells["titleTranslationLanguageCode"].Value.ToString() == languageCode && row.Cells["titleTranslationTeamVersion"].Value.ToString() == teamVersion);
+
+                    if (items.Count() != 0)
+                        continue;
+
+                    QueueGrid.Rows.Add(titleNo, toonName, "1", "end", languageCode, teamVersion, line);
+                }
+                else if (line.Contains("https://anime-sama.fr"))
+				{
+					string toonName = line.Split('/')[4];
+                    QueueGrid.Rows.Add(0, toonName, "1", "end", "default", "default", line);
+                }
 				else
 				{
-					//Query used by Kea to download fan translations, webtoons doesn't support this query
-					line = Helpers.RemoveQueryStringByKey(line, "language");
-				}
-
-				string teamVersion = System.Web.HttpUtility.ParseQueryString(lineUri.Query).Get("teamVersion");
-
-				if (Helpers.IsStringEmptyNullOrWhiteSpace(teamVersion))
-				{
-					teamVersion = "default";
-				}
-				else
-				{
-					//Query used by Kea to download fan translations, webtoons doesn't support this query
-					line = Helpers.RemoveQueryStringByKey(line, "teamVersion");
-				}
-				
-				if( languageCode == "default" && teamVersion != "default" )
-				{
-					MessageBox.Show("default language can't have a team version.");
 					continue;
 				}
 
-				var items = QueueGrid.Rows.Cast<DataGridViewRow>().Where(row => row.Cells["titleName"].Value.ToString() == toonName && Convert.ToInt32(row.Cells["titleNo"].Value.ToString()) == titleNo && row.Cells["titleTranslationLanguageCode"].Value.ToString() == languageCode && row.Cells["titleTranslationTeamVersion"].Value.ToString() == teamVersion);
-
-				if (items.Count() != 0)
-					continue;
-
-				QueueGrid.Rows.Add(titleNo, toonName, "1", "end", languageCode, teamVersion, line);
+                
 			}
 			URLTextbox.Text = "";
 		}
@@ -185,22 +199,238 @@ namespace Kea
 				return;
 			}
 			if (QueueGrid.Rows.Count == 0) return;
-			
-			toonList = new List<Structures.ToonListEntry>();
 
-			foreach (DataGridViewRow r in QueueGrid.Rows) //get all chapter links
+
+			if (QueueGrid.Rows[0].Cells["titleUrl"].Value.ToString().Contains("anime"))
 			{
-				await Task.Run(() => GetChapterAsync(r));
-			}
-			for (int t = 0; t < toonList.Count; t++)	//for each comic in queue...
+                await DownloadAnimeListAsync();
+            }
+			else
 			{
-				await Task.Run(() => downloadComic(toonList[t]));
-			}
-			processInfo.Text = "done!";
+                await DownloadWebtoonAsync();
+            }
+
+            processInfo.Text = "done!";
 			progressBar.Value = progressBar.Minimum;
 		}
 
-		private async Task GetChapterAsync(DataGridViewRow r)
+        private async Task DownloadAnimeListAsync()
+        {
+            foreach (DataGridViewRow r in QueueGrid.Rows) //get all chapter links
+            {
+                //Début et fin
+                int chapter = int.Parse(r.Cells["titleEpBegin"].Value.ToString());
+                int chapterEnd = (r.Cells["titleEpEnd"].Value.ToString() == "end") ? -1 : int.Parse(r.Cells["titleEpEnd"].Value.ToString());
+                DownloadAnimeAsync(r.Cells["titleUrl"].Value.ToString(), chapter, chapterEnd);
+
+            }
+
+        }
+
+        private async Task DownloadAnimeAsync(string url, int chapter, int chapterEnd)
+        {
+            //Récupération d'une image 
+            //lancement du process pour l'anime concerné
+            await GetImagePathAsync(url);
+			if (chapterEnd == -1)
+			{
+				chapterEnd = animeMaxChapter;
+            }
+
+            //Occurence suivante si non tve
+            if (string.IsNullOrEmpty(animeImageUrl)) { return; }
+
+            string imgExtension = Helpers.GetFileExtensionFromUrl(animeImageUrl);
+            string[] urlSplit = animeImageUrl.Split('/');
+            //on enlève 1/1.jpg
+            int sufixSize = urlSplit[urlSplit.Length - 2].Length + 1 + urlSplit[urlSplit.Length - 1].Length;
+            string baseUrl = animeImageUrl.Remove(animeImageUrl.Length - sufixSize, sufixSize);
+
+            string baseSavePath = savepathTB.Text + @"\";
+			string animeName = urlSplit[urlSplit.Length - 3].Replace("%20", " ");
+            string comicSavePath = baseSavePath + animeName;
+            string comicErrorSavePath = comicSavePath + "_Error";
+
+            //Création des repertoirs de travail
+            Directory.CreateDirectory(string.Format("{0}\\", comicSavePath));
+            Directory.CreateDirectory(string.Format("{0}\\", comicErrorSavePath));
+            List<Structures.downloadedToonChapterFileInfo> downloadedImages = new List<Structures.downloadedToonChapterFileInfo>();
+			int prevChapter = chapter;
+            bool isEnded = false;
+
+            processInfo.Invoke((MethodInvoker)delegate
+            {
+                progressBar.Minimum = chapter;
+                progressBar.Maximum = chapterEnd;
+            });
+
+            while (!isEnded && (chapter <= chapterEnd))
+            {
+                processInfo.Invoke((MethodInvoker)delegate { processInfo.Text = $"[ ({animeName}) ] treating chapter {chapter}/{chapterEnd}"; try { progressBar.Value = chapter; } catch { } }); //run on the UI thread
+
+                //faire traitement chapitre(chapter) , renvoie false quand rien n'est trouvé (pour sortir de la boucle)
+                List<Structures.downloadedToonChapterFileInfo> downloadedChapter = ChapterTreatment(chapter, comicSavePath, comicErrorSavePath, baseUrl,imgExtension);
+				isEnded = downloadedChapter.Count == 0;
+				downloadedImages.AddRange(downloadedChapter);
+
+				//1 doc par 10 chapitre
+                if (chapter % 10 == 0 || isEnded || chapter == chapterEnd)
+                {
+                    ToonHelpers.createBundledFile(saveAs, string.Format("{0}_{1:D3}_{2:D3}", comicSavePath, prevChapter, chapter), downloadedImages);
+					prevChapter = chapter + 1;
+                    downloadedImages = new List<Structures.downloadedToonChapterFileInfo>();
+                }
+                chapter++;
+            }
+
+            //Suppression du répertoire de travail
+            Directory.Delete(comicSavePath, true);
+            //Si vide, suppression du répertoire des anomalies
+            if (Directory.GetFiles(comicErrorSavePath).Length == 0)
+            {
+                Directory.Delete(comicErrorSavePath, true);
+            }
+
+
+        }
+
+        private List<Structures.downloadedToonChapterFileInfo> ChapterTreatment(int chapter, string comicSavePath,string comicErrorSavePath, string baseUrl, string imgExtension)
+        {
+			bool isOk = true;
+            List<Structures.downloadedToonChapterFileInfo> downloadedImages = new List<Structures.downloadedToonChapterFileInfo>();
+            Bitmap bitmap = null;
+
+            string chapterSavePath = string.Format("{0}\\", comicSavePath);
+
+            int frame = 1;
+
+            using (WebClient client = new WebClient())
+            {
+                client.Headers.Add("Cookie", "pagGDPR=true;");  //add cookies to bypass age verification
+                client.Headers.Add("User-Agent", Globals.spoofedUserAgent);
+
+                IWebProxy proxy = WebRequest.DefaultWebProxy;   //add default proxy
+                client.Proxy = proxy;
+
+                client.Encoding = System.Text.Encoding.UTF8;
+
+                while (isOk)
+                {
+                    Structures.downloadedToonChapterFileInfo fileInfo = new Structures.downloadedToonChapterFileInfo();
+
+                    string imgName = string.Format("{0:D5}_{1:D5}", chapter, frame);
+                    string imgSaveName = $"{imgName}{imgExtension}";
+                    string imgSavePath = $"{chapterSavePath}{imgSaveName}";
+                    string imgUrl = string.Format("{0}{1}/{2}{3}", baseUrl, chapter, frame, imgExtension);
+
+                    try
+                    {
+                        client.DownloadFile(new Uri(imgUrl), imgSavePath);
+                        frame++;
+
+                        try
+                        {
+                            bitmap = (Bitmap)System.Drawing.Image.FromFile(imgSavePath);
+
+                            //Ratio 0.69 = paysage, 1,43 portrait
+							//Si on dépasse ce ration, il y a surement plusieurs scan dans l'image
+                            double ratio = (double)bitmap.Height / bitmap.Width;
+                            if ((ratio < 0.89 && ratio > 0.49) ||
+                                (ratio < 1.63 && ratio > 1.23))
+                            {
+                                fileInfo.filePath = imgSavePath;
+                                fileInfo.filePathInArchive = imgSaveName;
+                                downloadedImages.Add(fileInfo);
+
+                            }
+                            else
+                            {
+								//Regarder s'il y a plusieurs images dans le scan
+                                double d = ((double)bitmap.Height / bitmap.Width) / 1.43;///////////////////////////////////////////////////////////JJK 1.5
+
+								//Nombre d'images estimées
+                                int nbImg = (int)Math.Round(d, MidpointRounding.ToEven);
+								//Taille estimée d'une image
+                                int newHeight = bitmap.Height / nbImg;
+
+								//On créait des sous images pour remplacer l'original
+                                for (int i = 0; i < nbImg; i++)
+                                {
+                                    Bitmap temp = bitmap.Clone(new System.Drawing.Rectangle(0, newHeight * i, bitmap.Width, newHeight), bitmap.PixelFormat);
+                                    string tempName = $"{imgName}_{i:D2}{imgExtension}";
+                                    string tempPath = $"{chapterSavePath}{tempName}";
+
+                                    temp.Save(tempPath);
+                                    fileInfo.filePath = tempPath;
+                                    fileInfo.filePathInArchive = tempName;
+                                    downloadedImages.Add(fileInfo);
+                                    temp.Dispose();
+                                }
+
+                            }
+                            bitmap.Dispose();
+
+                        }
+                        catch (Exception)
+                        {
+
+                            if (bitmap != null)
+                                bitmap.Dispose();
+
+							string errorImgPath = string.Format("{0}\\{1}.webp", comicErrorSavePath, imgSaveName);
+                            //On met les erreurs dans un repertoire spécifique non supprimé
+                            File.Move(imgSavePath, errorImgPath);
+
+							try
+							{
+                                // Charger l'image WEBP
+                                using (var image = new MagickImage(errorImgPath))
+                                {
+                                    // Convertir au format JPG
+                                    image.Format = MagickFormat.Jpg;
+
+                                    // Sauvegarder l'image convertie
+                                    image.Write(imgSavePath);
+                                }
+                                fileInfo.filePath = imgSavePath;
+                                fileInfo.filePathInArchive = imgSaveName;
+                                downloadedImages.Add(fileInfo);
+
+								//Suppression de l'erreur bien traitée
+								File.Delete(errorImgPath);
+                            }
+							catch (Exception)
+							{ 
+								//ne rien faire si anomalie
+							}
+
+                        }
+
+                    }
+                    catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        isOk = false;
+                    }
+                }
+            }
+			return downloadedImages;
+        }
+
+        private async Task DownloadWebtoonAsync()
+        {
+            toonList = new List<Structures.ToonListEntry>();
+
+            foreach (DataGridViewRow r in QueueGrid.Rows) //get all chapter links
+            {
+                await Task.Run(() => GetChapterAsync(r));
+            }
+            for (int t = 0; t < toonList.Count; t++)    //for each comic in queue...
+            {
+                await Task.Run(() => downloadComic(toonList[t]));
+            }
+        }
+
+        private async Task GetChapterAsync(DataGridViewRow r)
 		{
 			string line = r.Cells["titleUrl"].Value.ToString();
 			if (Helpers.IsStringEmptyNullOrWhiteSpace(line)) return;
@@ -296,7 +526,53 @@ namespace Kea
 			toonList.Add(currentToonEntry);
 		}
 
-		private void downloadComic(Structures.ToonListEntry currentToon)
+        private async Task GetImagePathAsync(string line)
+        {
+            if (Helpers.IsStringEmptyNullOrWhiteSpace(line)) return;
+
+            // Configurer le service pour ChromeDriver
+            var chromeService = ChromeDriverService.CreateDefaultService();
+            chromeService.HideCommandPromptWindow = true; // Masquer la console CMD
+
+            // Configurer ChromeDriver
+            var options = new ChromeOptions();
+            options.AddArgument("--headless"); // Exécuter sans interface graphique
+
+            using (var driver = new ChromeDriver(chromeService,options))
+            {
+                // Charger la page
+                driver.Navigate().GoToUrl(line);
+
+                // Attendre que les éléments soient chargés (optionnel, dépend du site)
+                //System.Threading.Thread.Sleep(5000);
+
+                // Récupérer les URLs des images dans la div id="scansPlacement"
+                var imageElements = driver.FindElements(By.CssSelector("#scansPlacement img"));
+
+				if(imageElements.Count == 0)
+				{
+					animeImageUrl = string.Empty;
+
+                }
+				else
+				{
+                    animeImageUrl = imageElements[0].GetAttribute("src");
+
+                }
+
+				//Récupération du nombre de chapitres existants
+                // Localiser l'élément <select> par son ID
+                var selectElement = driver.FindElement(By.Id("selectChapitres"));
+
+                // Créer un objet SelectElement
+                var select = new SelectElement(selectElement);
+
+                // Compter le nombre d'options dans le menu déroulant
+                animeMaxChapter = select.Options.Count;
+            }
+        }
+
+        private void downloadComic(Structures.ToonListEntry currentToon)
 		{
 			string baseSavePath = savepathTB.Text + @"\";
 			string comicSavePath = baseSavePath + ToonHelpers.GetToonSavePath(currentToon.toonInfo);
@@ -616,6 +892,159 @@ namespace Kea
 				EnableControls(con.Parent);
 			}
 		}
-		#endregion
-	}
+        #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+			/*
+			 * - Faire fonctionner avec l'écran actuel (recherche des images dans l'url via regex)
+			 * - Ajouter des exemples dans l'écran
+			 * - Split en plusieurs fonction nommées
+			 * - Commenter
+			 * - Mettre sur GIT
+			 * - Voir pour gérer avec visualisation le système de découpage
+			 * - Voir pour corriger les images buggées
+			 * 
+			 * */
+
+			bool isOk = true;
+            saveAs = saveAsOption.Text;
+            string imgExtension = Helpers.GetFileExtensionFromUrl(URLTextbox.Text);
+			string[] urlSplit = URLTextbox.Text.Split('/');
+			//on enlève 1/1.jpg
+			int sufixSize = urlSplit[urlSplit.Length - 2].Length + 1 + urlSplit[urlSplit.Length - 1].Length;	
+            string baseUrl = URLTextbox.Text.Remove(URLTextbox.Text.Length - sufixSize, sufixSize);
+
+            string baseSavePath = savepathTB.Text + @"\";
+            string comicSavePath = baseSavePath + urlSplit[urlSplit.Length - 3];
+            string comicErrorSavePath = baseSavePath + urlSplit[urlSplit.Length - 3]+ "_Error";
+            Directory.CreateDirectory(string.Format("{0}\\", comicSavePath));
+            Directory.CreateDirectory(string.Format("{0}\\", comicErrorSavePath));
+            List<Structures.downloadedToonChapterFileInfo> downloadedImages;
+            downloadedImages = new List<Structures.downloadedToonChapterFileInfo>();
+            int chapter = 1;
+			int frame = 1;
+			Bitmap bitmap = null;
+
+
+            using (WebClient client = new WebClient())
+			{
+                client.Headers.Add("Cookie", "pagGDPR=true;");  //add cookies to bypass age verification
+				client.Headers.Add("User-Agent", Globals.spoofedUserAgent);
+
+				IWebProxy proxy = WebRequest.DefaultWebProxy;   //add default proxy
+				client.Proxy = proxy;
+
+				client.Encoding = System.Text.Encoding.UTF8;
+
+				while (isOk)
+				{
+                    Structures.downloadedToonChapterFileInfo fileInfo = new Structures.downloadedToonChapterFileInfo();
+
+					string imgName = string.Format("{0:D5}_{1:D5}",chapter, frame);
+					string chapterSavePath = string.Format("{0}\\", comicSavePath);
+
+
+					string imgSaveName = $"{imgName}{imgExtension}";
+					string imgSavePath = $"{chapterSavePath}{imgSaveName}";
+
+                    string imgUrl = string.Format("{0}{1}/{2}{3}", baseUrl, chapter,frame, imgExtension);
+
+                    try { 
+						client.DownloadFile(new Uri(imgUrl), imgSavePath);
+						frame++;
+
+						try
+						{
+                            bitmap = (Bitmap)System.Drawing.Image.FromFile(imgSavePath);
+
+                            //Ratio 0.69 = paysage, 1,43 portrait
+							double ratio = (double)bitmap.Height / bitmap.Width;
+                            if ((ratio < 0.89 && ratio >0.49) ||
+                                (ratio < 1.63 && ratio > 1.23))
+                            {
+                                fileInfo.filePath = imgSavePath;
+                                fileInfo.filePathInArchive = imgSaveName;
+                                downloadedImages.Add(fileInfo);
+
+                            }
+                            else
+							{
+								double d = ((double)bitmap.Height / bitmap.Width) / 1.43;///////////////////////////////////////////////////////////JJK 1.5
+
+                                int nbImg = (int)Math.Round(d, MidpointRounding.ToEven);
+								int newHeight = bitmap.Height / nbImg;
+
+                                for (int i = 0; i < nbImg; i++)
+								{
+									Bitmap temp = bitmap.Clone(new System.Drawing.Rectangle(0, newHeight*i, bitmap.Width, newHeight), bitmap.PixelFormat);
+                                    string tempName = $"{imgName}_{i:D2}{imgExtension}";
+                                    string tempPath = $"{chapterSavePath}{tempName}";
+
+                                    temp.Save(tempPath);
+                                    fileInfo.filePath = tempPath;
+                                    fileInfo.filePathInArchive = tempName;
+                                    downloadedImages.Add(fileInfo);
+									temp.Dispose();
+                                }
+
+                            }
+
+                        }
+                        catch (Exception )
+                        {
+							if(bitmap!=null)
+								bitmap.Dispose();
+
+							//On met les erreurs dans un repertoire spécifique non supprimé
+                            File.Move(imgSavePath, string.Format("{0}\\{1}", comicErrorSavePath, imgSaveName));
+						}
+
+                    }
+					catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+					{
+
+                        if (chapter % 10 == 0 || frame == 1)
+                        {
+                            //1 doc par 10 chapitre
+                            ToonHelpers.createBundledFile(saveAs, string.Format("{0}_{1:D3}_{2:D3}", comicSavePath, chapter - 9, chapter), downloadedImages);
+                            downloadedImages = new List<Structures.downloadedToonChapterFileInfo>();
+							try
+							{
+                                if (bitmap != null)
+                                    bitmap.Dispose();
+                                Directory.Delete(comicSavePath, true);
+                                Directory.CreateDirectory(string.Format("{0}\\", comicSavePath));
+							}
+							catch (Exception){ }
+                        }
+
+                        if (frame == 1 )
+                        { 
+							isOk = false; 
+						}
+						else {
+							frame = 1;
+							chapter ++;
+
+                        }
+
+
+						/*
+                        //pour y aller doucement
+                        if (chapter == 4)
+                        {
+                            isOk = false;
+                            //1 doc par 10 chapitre
+                            ToonHelpers.createBundledFile(saveAs, string.Format("{0}_{1:D3}_{2:D3}", comicSavePath, 1, 3), downloadedImages);
+                            downloadedImages = new List<Structures.downloadedToonChapterFileInfo>();
+
+                            Directory.Delete(comicSavePath, true);
+                        }*/
+                    }
+				}
+			}
+
+        }
+    }
 }
