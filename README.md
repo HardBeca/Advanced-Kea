@@ -24,6 +24,9 @@ To edit Kea, download everything and open ***Kea.sln*** in Visual Studio.
 >When multiple translations are found, the translation with highest likes is downloaded.
 >If you are interested in downloading the translation of a specific team, add &teamVersion=TEAMVERSION to the url, replace TEAMVERSION with the desired team.
 
+>***Note3:*** To download anime from anime-sama, use the correct url
+>This would work: https://anime-sama.fr/catalogue/one-piece/scan_noir-et-blanc/vf/
+
 ***Language codes ***
 
 | Language | Code |
